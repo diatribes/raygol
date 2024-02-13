@@ -1,5 +1,3 @@
-Plasma, colorful waves, and metaballs in Raylib using software style rendering (render on cpu, send to texture on gpu)
+Conway's Game of Life in Raylib
 
-![screenshot](https://github.com/diatribes/plasma-sw/blob/main/screenrec001.gif?raw=true)
-
-See here for an explanation of the plasma algorithm: https://lodev.org/cgtutor/plasma.html
+![screenshot](https://github.com/diatribes/raygol/blob/main/screenrec001.gif?raw=true)
