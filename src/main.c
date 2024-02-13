@@ -16,6 +16,8 @@
 #define cell_state_alive 1
 #define cell_state_none 2
 
+#define CLAMP(x, low, high)  (((x) > (high)) ? (high) : (((x) < (low)) ? (low) : (x)))
+
 int seed;
 char universe[W * H];
 
@@ -67,7 +69,8 @@ static Color cell_get_color(int x, int y)
     case cell_state_dead:
         return WHITE;
     case cell_state_alive:
-        return BLACK;
+        //return BLACK;
+        return ColorFromHSV(CLAMP(x + y, 40, 360), 1.0, 1.0);
     case cell_state_none:
         return WHITE;
     default:
