@@ -9,7 +9,7 @@
 #endif
 
 #define TARGET_FPS 100
-#define W 320
+#define W 400
 #define H 200
 
 #define cell_state_dead 0
@@ -95,7 +95,7 @@ static void universe_init()
 
 static void universe_tick()
 {
-    char new[W * H];
+    static char new[W * H];
     int y, x;
     int cell_state;
 
@@ -127,7 +127,7 @@ static void universe_draw()
 
 void main_loop_body()
 {
-    if (IsKeyPressed(KEY_F)) {
+    if (IsKeyPressed(KEY_F) || IsGestureDetected(GESTURE_TAP)) {
         if (IsWindowFullscreen()) {
             RestoreWindow();
         } else {
@@ -151,7 +151,7 @@ void main_loop_body()
 
 int main(int argc, char * argv[])
 {
-    InitWindow(W, H, "software plasma");
+    InitWindow(W, H, "Conway's Game of Life");
 
     Image img = {
         .width = W,
