@@ -8,8 +8,8 @@
     #include <emscripten/emscripten.h>
 #endif
 
-#define TARGET_FPS 100
-#define W 400
+#define TARGET_FPS 60
+#define W 320 
 #define H 200
 
 #define cell_state_dead 0
@@ -23,6 +23,11 @@ char universe[W * H];
 
 Texture2D gpu_data;
 Color cpu_data[W * H];
+
+extern inline double dist(double x1, double y1, double x2, double y2)
+{
+    return sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+}
 
 static char cell_get(int x, int y)
 {
@@ -65,17 +70,17 @@ static int cell_tick(int x, int y)
 
 static Color cell_get_color(int x, int y)
 {
-    switch (cell_get(x, y)) {
-    case cell_state_dead:
-        return WHITE;
-    case cell_state_alive:
-        //return BLACK;
-        return ColorFromHSV(CLAMP(x + y, 40, 360), 1.0, 1.0);
-    case cell_state_none:
-        return WHITE;
-    default:
-        return WHITE;
-    }
+    // plasma pattern
+    double t = GetTime() * 10.0;
+    double value = 0;
+    double d1 = dist(x + t, y, W, H) / 17.0;
+    double d2 = dist(x, y + t * 2.0, W / 2.0, H / 2.0) / 14.0;
+    double d3 = dist(x, y + t * 1.0, W * 2, H * 2) / 13.0;
+    double d4 = dist(x + t, y, 0, 0) / 12.0;
+    value = (sin(d1) + sin(d2) + sin(d3) + sin(d4)) / 4.0;
+    int is_alive = cell_get(x, y) == cell_state_alive;
+    return ColorFromHSV((is_alive * 180) - (value * 360.0), 1.0, 1.0);
+
 }
 
 static void universe_init()
